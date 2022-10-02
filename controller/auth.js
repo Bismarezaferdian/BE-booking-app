@@ -9,14 +9,20 @@ const authController = {
   },
 
   register: async (req, res, next) => {
-    const { userName, email, password } = req.body;
+    const { userName, email, password, photo, isAdmin } = req.body;
     try {
+      const user = await User.findOne({ userName: userName, emil: email });
+      if (user) {
+        return next(createError(400, "User has been register!"));
+      }
       const salt = bcrypt.genSaltSync(10);
       const hash = bcrypt.hashSync(password, salt);
       const newUser = new User({
         userName: userName,
         email: email,
         password: hash,
+        photo: photo,
+        isAdmin: isAdmin,
       });
       await newUser.save();
       res.status(200).send("user has been create");
@@ -42,12 +48,15 @@ const authController = {
         process.env.JWT
       );
 
-      const { password, isAdmin, ...others } = user._doc;
+      //user._doc di ambil dari yang di kembalikan di response dari user (test postman)
+      // const { password,isAdmin ...others } = user._doc;
+      const { password, ...others } = user._doc;
       res
         .cookie("access_token", token, {
           httpOnly: true,
         })
         .status(200)
+        //hanya di kembalikan spreetoperator, kecuali password dan isadmin
         .json({ ...others });
     } catch (error) {
       next(error);

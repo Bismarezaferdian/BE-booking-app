@@ -1,4 +1,5 @@
 import Hotel from "../model/Hotel.js";
+import Room from "../model/Room.js";
 // import { createError } from "../utils/error.js";
 
 const hotelController = {
@@ -13,28 +14,29 @@ const hotelController = {
   },
   //add hotels
   postHotels: async (req, res) => {
+    const newHotel = new Hotel(req.body);
     try {
-      const {
-        name,
-        type,
-        city,
-        address,
-        distance,
-        title,
-        desc,
-        cheapestPrice,
-      } = req.body;
+      // const {
+      //   name,
+      //   type,
+      //   city,
+      //   address,
+      //   distance,
+      //   title,
+      //   desc,
+      //   cheapestPrice,
+      // } = req.body;
 
-      const newHotel = new Hotel({
-        name: name,
-        type: type,
-        city: city,
-        address: address,
-        distance: distance,
-        title: title,
-        desc: desc,
-        cheapestPrice: cheapestPrice,
-      });
+      // const newHotel = new Hotel({
+      //   name: name,
+      //   type: type,
+      //   city: city,
+      //   address: address,
+      //   distance: distance,
+      //   title: title,
+      //   desc: desc,
+      //   cheapestPrice: cheapestPrice,
+      // });
 
       const saveHotel = await newHotel.save();
 
@@ -79,16 +81,79 @@ const hotelController = {
 
   //find all
   viewAllHotels: async (req, res, next) => {
-    const failed = true;
+    // const failed = true;
+    const { min, max, ...others } = req.query;
 
     try {
-      const hotelsAll = await Hotel.find();
+      const hotelsAll = await Hotel.find({
+        ...others,
+        cheapestPrice: { $gt: min | 1, $lt: max || 10000000 },
+      }).limit(req.query.limit);
+
+      // const perRoom = {};
+
+      // hotelsAll.map((hotel) => console.log(hotel.rooms));
+      // console.log(perRoom);
       res.status(200).json(hotelsAll);
     } catch (error) {
       next(error);
     }
   },
+
+  //find by city
+  countByCity: async (req, res, next) => {
+    const cities = req.query.cities.split(",");
+
+    try {
+      const list = await Promise.all(
+        cities.map((city) => {
+          return Hotel.countDocuments({ city: city });
+        })
+      );
+
+      res.status(200).json(list);
+    } catch (error) {
+      next(error);
+    }
+  },
+
+  // count by type
+  countType: async (req, res, next) => {
+    try {
+      const countHotel = await Hotel.countDocuments({ type: "hotel" });
+      const countApartement = await Hotel.countDocuments({
+        type: "apartement",
+      });
+      const countVilla = await Hotel.countDocuments({ type: "villa" });
+      const countResort = await Hotel.countDocuments({ type: "resort" });
+      const countCabin = await Hotel.countDocuments({ type: "cabin" });
+
+      // console.log(list);
+      res.status(200).send([
+        { type: "hotel", count: countHotel },
+        { type: "apartement", count: countApartement },
+        { type: "villa", count: countVilla },
+        { type: "resort", count: countResort },
+        { type: "cabin", count: countCabin },
+      ]);
+    } catch (error) {
+      next(error);
+    }
+  },
   //rooms
+  getHotelrooms: async (req, res, next) => {
+    const hotel = await Hotel.findById(req.params.id);
+    try {
+      const List = await Promise.all(
+        hotel.rooms.map((room) => {
+          return Room.findById(room);
+        })
+      );
+      res.status(200).json(List);
+    } catch (error) {
+      next(error);
+    }
+  },
   //users
 };
 

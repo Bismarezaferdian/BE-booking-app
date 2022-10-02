@@ -15,7 +15,7 @@ const router = express.Router();
 // });
 
 // router.get("/user", userController.verifyUser, userController.user);
-router.post("/", userController.verifyUser, userController.postUsers);
+// router.post("/", userController.verifyUser, userController.postUsers);
 router.put("/:id", userController.verifyUser, userController.updateUsers);
 router.delete("/:id", userController.verifyUser, userController.deleteUsers);
 router.get("/:id", userController.verifyUser, userController.viewUser);

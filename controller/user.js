@@ -12,30 +12,31 @@ const userController = {
   users: (req, res) => {
     res.send("this is Users");
   },
-  //add Users
+  // add Users
   postUsers: async (req, res) => {
+    const newUser = new User(req.body);
     try {
-      const {
-        name,
-        type,
-        city,
-        address,
-        distance,
-        title,
-        desc,
-        cheapestPrice,
-      } = req.body;
+      // const {
+      //   name,
+      //   type,
+      //   city,
+      //   address,
+      //   distance,
+      //   title,
+      //   desc,
+      //   cheapestPrice,
+      // } = req.body;
 
-      const newUser = new User({
-        name: name,
-        type: type,
-        city: city,
-        address: address,
-        distance: distance,
-        title: title,
-        desc: desc,
-        cheapestPrice: cheapestPrice,
-      });
+      // const newUser = new User({
+      // name: name,
+      // type: type,
+      // city: city,
+      // address: address,
+      // distance: distance,
+      // title: title,
+      // desc: desc,
+      // cheapestPrice: cheapestPrice,
+      // });
 
       const saveUser = await newUser.save();
 
@@ -103,12 +104,13 @@ const userController = {
   verifyAdmin: (req, res, next) => {
     createVerifyToken(req, res, next, () => {
       if (req.user.isAdmin) {
-        next();
+        console.log("ok");
       } else {
         next(createError(401, "you are not admin !"));
       }
     });
   },
+
   //rooms
   //users
 };

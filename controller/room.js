@@ -37,24 +37,71 @@ const roomController = {
       res.status(500).json(error);
     }
   },
+  updateAvilabilityRoom: async (req, res, next) => {
+    try {
+      const date = await Room.updateOne(
+        { "roomNumbers._id": req.params.id },
+        {
+          $push: {
+            "roomNumbers.$.unavailableDates": req.body.dates,
+          },
+        }
+      );
+      res.status(200).json("has been updated");
+    } catch (err) {
+      next(err);
+    }
+  },
   //delete room
   deleteRoom: async (req, res, next) => {
-    const hotelId = req.params.idHotel;
     const roomId = req.params.id;
     try {
-      await Room.findByIdAndDelete(roomId);
-      try {
-        await Hotel.findByIdAndUpdate(hotelId, {
+      const hotelAll = await Hotel.find();
+      const hotelId = [];
+      hotelAll.map((hotel) =>
+        hotel.rooms.filter((id) =>
+          id.includes(roomId) ? hotelId.push(hotel.id) : ""
+        )
+      );
+
+      hotelId.map(async (idHotel) => {
+        await Hotel.findByIdAndUpdate(idHotel, {
           $pull: { rooms: roomId },
         });
+      });
+
+      try {
+        await Room.findByIdAndDelete(roomId);
+        res.status(200).json("has been delete");
       } catch (error) {
         next(error);
       }
-      res.status(200).json("has been delete");
     } catch (error) {
       next(error);
     }
   },
+  // await hotelId.map((idHotel) =>
+  //   Hotel.findByIdAndUpdate(idHotel, {
+  //     $pull: { rooms: roomId },
+  //   })
+  // );
+  // await Room.findByIdAndDelete(roomId);
+
+  // console.log(hotelId);
+  //
+  // await Room.findByIdAndDelete(roomId);
+  // try {
+  //   await Hotel.findByIdAndUpdate(hotelId, {
+  //     $pull: { rooms: roomId },
+  //   });
+  // } catch (error) {
+  //   next(error)
+  // }
+  //     res.status(200).json("has been delete");
+  //   } catch (error) {
+  //     next(error);
+  //   }
+  // },
 
   //view room
   viewRoom: async (req, res, next) => {
