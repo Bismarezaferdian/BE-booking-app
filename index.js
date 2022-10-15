@@ -18,14 +18,23 @@ dotenv.config();
 const connect = async () => {
   try {
     await mongoose.connect(process.env.MONGO);
-    console.log("Connected to mongoDB.");
+    // console.log("Connected to mongoDB.");
   } catch (error) {
     throw error;
   }
 };
 
-mongoose.connection.on("disconnected", () => {
-  console.log("mongoDB disconnected!");
+// mongoose.connection.on("disconnected", () => {
+//   console.log("mongoDB disconnected!");
+// });
+app.use((req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "GET, POST, PUT, DELETE, PATCH,OPTIONS"
+  );
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  next();
 });
 
 app.use(cors());
@@ -49,7 +58,7 @@ app.use((err, req, res, next) => {
   });
 });
 
-app.listen(8000, () => {
-  connect();
-  console.log("Connected to backend.");
-});
+// app.listen(8000, () => {
+//   connect();
+//   // console.log("Connected to backend.");
+// });

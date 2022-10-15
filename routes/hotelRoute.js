@@ -1,7 +1,6 @@
 // const router = require("express").Router();
 import express from "express";
 import hotelController from "../controller/hotel.js";
-import userController from "../controller/User.js";
 import { createVerifyToken, isAdmin } from "../utils/verifyToken.js";
 
 const router = express.Router();

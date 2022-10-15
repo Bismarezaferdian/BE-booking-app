@@ -12,7 +12,7 @@ export const createVerifyToken = (req, res, next) => {
       next(createError(403, "token not valid !"));
     }
     req.user = user;
-    console.log(req.user);
+    // console.log(req.user.id);
     next();
   });
 };
@@ -20,6 +20,5 @@ export const createVerifyToken = (req, res, next) => {
 export const isAdmin = async (req, res, next) => {
   if (!req.user.isAdmin)
     return res.status(401).send({ msg: "Not an admin, sorry" });
-
   next();
 };

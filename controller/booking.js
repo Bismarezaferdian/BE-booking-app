@@ -37,7 +37,15 @@ const bookingController = {
       const allBooking = await Booking.find();
       res.status(200).json(allBooking);
     } catch (error) {
-      console.log(error);
+      res.status(500).json(error);
+    }
+  },
+
+  deleteBooking: async (req, res) => {
+    try {
+      await Booking.findByIdAndDelete(req.params.id);
+      res.status(200).json("has been delete");
+    } catch (error) {
       res.status(500).json(error);
     }
   },

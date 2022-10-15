@@ -11,7 +11,10 @@ const authController = {
   register: async (req, res, next) => {
     const { userName, email, password, photo, isAdmin } = req.body;
     try {
-      const user = await User.findOne({ userName: userName, emil: email });
+      const user = await User.findOne({
+        userName: userName,
+        emil: email,
+      });
       if (user) {
         return next(createError(400, "User has been register!"));
       }
@@ -24,6 +27,7 @@ const authController = {
         photo: photo,
         isAdmin: isAdmin,
       });
+      // const newUser = new User(req.body, { password: hash });
       await newUser.save();
       res.status(200).send("user has been create");
     } catch (error) {

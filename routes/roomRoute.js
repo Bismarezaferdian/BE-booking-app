@@ -10,13 +10,13 @@ const router = express.Router();
 router.post("/:idHotel", createVerifyToken, isAdmin, roomController.postRoom);
 router.put("/:id", createVerifyToken, isAdmin, roomController.updateRoom);
 router.put("/availability/:id", roomController.updateAvilabilityRoom);
-router.delete("/:id", userController.verifyUser, roomController.deleteRoom);
+router.delete("/:id", createVerifyToken, isAdmin, roomController.deleteRoom);
 // router.delete(
 //   "/:id/:idHotel",
 //   userController.verifyUser,
 //   roomController.deleteRoom
 // );
 router.get("/:id", userController.verifyUser, roomController.viewRoom);
-router.get("/", userController.verifyAdmin, roomController.viewAllRooms);
+router.get("/", roomController.viewAllRooms);
 
 export default router;

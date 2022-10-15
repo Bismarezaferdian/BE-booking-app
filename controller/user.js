@@ -104,7 +104,6 @@ const userController = {
   verifyAdmin: (req, res, next) => {
     createVerifyToken(req, res, next, () => {
       if (req.user.isAdmin) {
-        console.log("ok");
       } else {
         next(createError(401, "you are not admin !"));
       }
