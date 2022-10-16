@@ -16,7 +16,7 @@ router.delete("/:id", createVerifyToken, isAdmin, roomController.deleteRoom);
 //   userController.verifyUser,
 //   roomController.deleteRoom
 // );
-router.get("/:id", userController.verifyUser, roomController.viewRoom);
+router.get("/:id", roomController.viewRoom);
 router.get("/", roomController.viewAllRooms);
 
 export default router;
