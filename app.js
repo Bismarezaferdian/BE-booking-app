@@ -41,6 +41,7 @@ app.use(cors());
 app.use(cookieParse());
 app.use(express.json());
 
+// app.use("/", hotelRoute);
 app.use("/api/v1/hotel", hotelRoute);
 app.use("/api/v1/auth", authRoute);
 app.use("/api/v1/user", userRoute);
@@ -63,7 +64,8 @@ app.use((err, req, res, next) => {
 //   console.log("Connected to backend.");
 // });
 
-app.listen(process.env.PORT || 3000, function () {
+app.listen(process.env.PORT || 8000, function () {
+  connect();
   console.log(
     "Express server listening on port %d in %s mode",
     this.address().port,
