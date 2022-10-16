@@ -6,7 +6,7 @@ import { createVerifyToken, isAdmin } from "../utils/verifyToken.js";
 const router = express.Router();
 
 router.post("/", createVerifyToken, isAdmin, bookingController.postBooking);
-router.get("/", userController.verifyAdmin, bookingController.viewAllBooking);
+router.get("/", bookingController.viewAllBooking);
 router.delete(
   "/:id",
   userController.verifyAdmin,
