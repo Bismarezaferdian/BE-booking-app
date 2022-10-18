@@ -5,6 +5,7 @@ import userController from "../controller/user.js";
 
 const router = express.Router();
 
+//error cookie no detect when after deploy but test in posman success (401 failed verify token)
 // router.post("/", createVerifyToken, isAdmin, bookingController.postBooking);
 router.post("/", bookingController.postBooking);
 router.get("/", bookingController.viewAllBooking);
