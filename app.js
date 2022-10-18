@@ -37,7 +37,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(cors());
+app.use(cors({ credentials: true }));
 app.use(cookieParse());
 app.use(express.json());
 
