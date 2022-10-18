@@ -59,7 +59,6 @@ const authController = {
       res
         .cookie("access_token", token, {
           httpOnly: true,
-          secure: true,
         })
         .status(200)
         //hanya di kembalikan spreetoperator, kecuali password dan isadmin
