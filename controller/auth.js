@@ -11,12 +11,19 @@ const authController = {
   register: async (req, res, next) => {
     const { userName, email, password, photo, isAdmin } = req.body;
     try {
+      if (
+        userName === undefined ||
+        email === undefined ||
+        password === undefined
+      ) {
+        return next(createError(404, "data is require !"));
+      }
       const user = await User.findOne({
         userName: userName,
         emil: email,
       });
       if (user) {
-        return next(createError(400, "User has been register!"));
+        return next(createError(400, "user has been register !"));
       }
       const salt = bcrypt.genSaltSync(10);
       const hash = bcrypt.hashSync(password, salt);
