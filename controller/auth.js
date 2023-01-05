@@ -59,13 +59,17 @@ const authController = {
         { id: user._id, isAdmin: user.isAdmin },
         process.env.JWT
       );
+      // console.log(token);
 
       //user._doc di ambil dari yang di kembalikan di response dari user (test postman)
       // const { password,isAdmin ...others } = user._doc;
       const { password, ...others } = user._doc;
       res
-        .cookie("access_token", token, {
-          httpOnly: true,
+        .cookie("token", token, {
+          path: "/",
+          // httpOnly: true,
+          // secure: true,
+          // sameSite: "none",
         })
         .status(200)
         //hanya di kembalikan spreetoperator, kecuali password dan isadmin

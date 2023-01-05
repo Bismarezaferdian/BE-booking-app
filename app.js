@@ -27,13 +27,27 @@ const connect = async () => {
 // mongoose.connection.on("disconnected", () => {
 //   console.log("mongoDB disconnected!");
 // });
-app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader(
-    "Access-Control-Allow-Methods",
-    "GET, POST, PUT, DELETE, PATCH,OPTIONS"
+// app.use((req, res, next) => {
+//   // res.setHeader(
+//   //   "Access-Control-Allow-Origin",
+//   //   "http://localhost:8000/api/v1/auth/login"
+//   // );
+//   res.setHeader("Access-Control-Allow-Origin", "*");
+//   res.setHeader("Access-Control-Allow-Credentials:true");
+//   res.setHeader(
+//     "Access-Control-Allow-Methods",
+//     "GET, POST, PUT, DELETE, PATCH,OPTIONS"
+//   );
+//   res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+//   next();
+// });
+app.use(function (req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Credentials", true);
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
   );
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
   next();
 });
 
