@@ -67,6 +67,7 @@ const authController = {
       res
         .cookie("token", token, {
           path: "/",
+
           // httpOnly: true,
           // secure: true,
           // sameSite: "none",
