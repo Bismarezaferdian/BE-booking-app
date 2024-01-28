@@ -7,9 +7,13 @@ const HotelSchema = new Schema({
     type: String,
     require: true,
   },
-  type: {
-    type: String,
-    require: true,
+
+  //this code reference to Properties model , create relationship database with properties
+  //Properties as foregnField on PropertiesModel
+  //why dont use type.Schema.ObjectId ? cause if use that cant lookup with foregenField type objectId
+  properties: {
+    type: Schema.Types.ObjectId,
+    ref: "Properties",
   },
   city: {
     type: String,
@@ -51,7 +55,12 @@ const HotelSchema = new Schema({
     type: Boolean,
     default: false,
   },
+  place: {
+    // type: Schema.Types.ObjectId,
+    type: Schema.Types.ObjectId,
+    ref: "Place",
+  },
 });
 
 // module.export = mongoose.model("hotel", HotelSchema);
-export default mongoose.model("hotel", HotelSchema);
+export default mongoose.model("Hotel", HotelSchema);

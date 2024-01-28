@@ -6,6 +6,8 @@ import userRoute from "./routes/userRoute.js";
 import authRoute from "./routes/authRoute.js";
 import roomRoute from "./routes/roomRoute.js";
 import bookingRoute from "./routes/bookingRoute.js";
+import placeRouter from "./routes/placeRoute.js";
+import propertiesRouter from "./routes/typePropertiesRoute.js";
 import cookieParse from "cookie-parser";
 import cors from "cors";
 // const express = require("express");
@@ -28,10 +30,11 @@ const connect = async () => {
 //   console.log("mongoDB disconnected!");
 // });
 // app.use((req, res, next) => {
-//   // res.setHeader(
-//   //   "Access-Control-Allow-Origin",
-//   //   "http://localhost:8000/api/v1/auth/login"
-//   // );
+//   res.setHeader(
+//     "Access-Control-Allow-Origin",
+//     "http://localhost:8000/api/v1/auth/login",
+//     "https://be-booking-app-production.up.railway.app"
+//   );
 //   res.setHeader("Access-Control-Allow-Origin", "*");
 //   res.setHeader("Access-Control-Allow-Credentials:true");
 //   res.setHeader(
@@ -61,6 +64,8 @@ app.use("/api/v1/auth", authRoute);
 app.use("/api/v1/user", userRoute);
 app.use("/api/v1/room", roomRoute);
 app.use("/api/v1/booking", bookingRoute);
+app.use("/api/v1/place", placeRouter);
+app.use("/api/v1/properties", propertiesRouter);
 
 app.use((err, req, res, next) => {
   const errorStatus = err.status || 500;

@@ -3,15 +3,6 @@ import Room from "../model/Room.js";
 // import { createError } from "../utils/error.js";
 
 const hotelController = {
-  user: (req, res) => {
-    res.send("connect user");
-  },
-
-  //auth
-  //hotels
-  hotels: (req, res) => {
-    res.send("this is hotels");
-  },
   //add hotels
   postHotels: async (req, res) => {
     const newHotel = new Hotel(req.body);
@@ -85,10 +76,17 @@ const hotelController = {
     const { min, max, ...others } = req.query;
 
     try {
-      const hotelsAll = await Hotel.find({
-        ...others,
-        cheapestPrice: { $gt: min | 1, $lt: max || 10000000 },
-      }).limit(req.query.limit);
+      const hotelsAll = await Hotel.find().populate({
+        path: "place properties",
+        select: "city name",
+      });
+
+      console.log(hotelsAll);
+      // const hotelsAll = await Hotel.find({
+      //   ...others,
+      //   cheapestPrice: { $gt: min | 1, $lt: max || 10000000 },
+      // })
+      //   .limit(req.query.limit)
 
       // const perRoom = {};
 
@@ -110,6 +108,7 @@ const hotelController = {
           return Hotel.countDocuments({ city: city });
         })
       );
+      console.log(list);
 
       res.status(200).json(list);
     } catch (error) {
