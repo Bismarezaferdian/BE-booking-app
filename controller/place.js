@@ -2,8 +2,9 @@ import Place from "../model/Place.js";
 
 const placeController = {
   getPlace: async (req, res) => {
+    const limits = req.query.limit;
     try {
-      const place = await Place.find();
+      const place = await Place.find().limit(limits);
       res.status(200).json(place);
     } catch (error) {
       console.log(error);
