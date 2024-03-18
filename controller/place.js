@@ -45,40 +45,33 @@ const placeController = {
   //get place inclue with hotel
   //hotel must be have obejctId place(relationship hotel to place)
   placeWithAllHotel: async (req, res) => {
+    const limit = req.query?.limit ? parseInt(req.query.limit) : null; // Set limit to null if not specified
+
     try {
-      Place.aggregate([
-        // {
-        //   //with project same as select on mysql
-        //   //if project undifined canot use function lookup
-        //   $project: {
-        //     //select id from place and convert to string
-        //     _id: {
-        //       $toString: "$_id",
-        //     },
-        //     //select city from place
-        //     city: {
-        //       $toString: "$city",
-        //     },
-        //     image: 1,
-        //   },
-        // },
+      const pipeline = [
         {
-          //for get data from hotel have same id or same relationship
           $lookup: {
             from: "hotels",
-            //localFiend and foregnField must have sama value
             localField: "_id",
             foreignField: "place",
             as: "countAllHotel",
           },
         },
-      ]).exec((err, result) => {
+      ];
+
+      if (limit !== null) {
+        pipeline.push({
+          $limit: limit,
+        });
+      }
+
+      Place.aggregate(pipeline).exec((err, result) => {
         if (err) {
           console.log("error", err);
+          res.status(500).json(err); // Return error response
+          return;
         }
-        if (result) {
-          res.status(200).json(result);
-        }
+        res.status(200).json(result); // Return successful response
       });
     } catch (error) {
       res.status(500).json(error);

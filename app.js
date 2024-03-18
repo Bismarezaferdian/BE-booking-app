@@ -8,6 +8,7 @@ import roomRoute from "./routes/roomRoute.js";
 import bookingRoute from "./routes/bookingRoute.js";
 import placeRouter from "./routes/placeRoute.js";
 import propertiesRouter from "./routes/typePropertiesRoute.js";
+import provinceRouter from "./routes/provinceRoute.js";
 import cookieParse from "cookie-parser";
 import cors from "cors";
 // const express = require("express");
@@ -66,6 +67,7 @@ app.use("/api/v1/room", roomRoute);
 app.use("/api/v1/booking", bookingRoute);
 app.use("/api/v1/place", placeRouter);
 app.use("/api/v1/properties", propertiesRouter);
+app.use("/api/v1/province", provinceRouter);
 
 app.use((err, req, res, next) => {
   const errorStatus = err.status || 500;

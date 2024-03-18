@@ -72,7 +72,6 @@ const hotelController = {
 
   getAllHotel: async (req, res) => {
     const limits = req.query.limit;
-    console.log(limits);
     try {
       const hotel = await Hotel.find()
         .populate({
@@ -115,9 +114,10 @@ const hotelController = {
 
   //find by city
   countByCity: async (req, res, next) => {
-    const cities = req.query.cities.split(",");
+    const cities = req.query?.cities?.split(",");
 
     try {
+      if (!cities) return;
       const list = await Promise.all(
         cities.map((city) => {
           return Hotel.countDocuments({ city: city });

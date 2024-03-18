@@ -20,6 +20,9 @@ const RoomSchema = new Schema(
       type: String,
       require: true,
     },
+    image: {
+      type: [String],
+    },
     roomNumbers: [{ number: Number, unavailableDates: { type: [Date] } }],
   },
   { timestamps: true }
